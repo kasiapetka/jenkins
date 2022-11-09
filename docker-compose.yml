@@ -1,0 +1,36 @@
+version: '3'
+services:
+  jenkins:
+    container_name: jenkins
+    image: jenkins-ansible
+    build: 
+      context: ./jenkins-ansible/
+    ports:
+      - 8080:8080
+    volumes:
+      - '$PWD/jenkins-home:/var/jenkins_home'
+    networks:
+      - net
+  
+  remote:
+    container_name: remote
+    image: remote-host
+    build: 
+      context: ./centos/
+    volumes:
+      - "$PWD/db-snap-upload.sh:/tmp/dump-script.sh"
+    networks:
+      - net
+
+  do_host:
+    platform: linux/amd64
+    container_name: db
+    image: mysql:5.7
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+    volumes: 
+      - '$PWD/db_data:/var/lib/mysql'
+    networks:
+      - net
+networks:
+  net: 

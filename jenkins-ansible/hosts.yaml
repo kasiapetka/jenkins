@@ -1,0 +1,10 @@
+all:
+  children:
+    test:
+      hosts:
+        test1:
+          ansible_connection: shh
+          ansible_host: remote
+          ansible_private_key_file: /var/jenkins_home/ansible/remote_ki
+          ansible_user: remote_user
+    ungrouped: {}
