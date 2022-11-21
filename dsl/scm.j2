@@ -1,0 +1,13 @@
+job('job_dsl_example') {
+  description("this is a test job")
+  
+  parameters{
+    stringParam('Planet', defaultValue= 'Earth', description='Welcome on the planet Earth')
+    booleanParam('Flag', true)
+    choiceParam('Planets', ['Earth (default)','Venus','Mercure'])
+  }
+  
+  scm{
+    git('https://github.com/jenkins-docs/simple-java-maven-app.git','master')
+  }
+}

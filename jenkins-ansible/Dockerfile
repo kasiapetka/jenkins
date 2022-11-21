@@ -1,4 +1,4 @@
-FROM jenkins/jenkins
+FROM  jenkins/jenkins
 
 #in jenkins a jenkins user is a default one so we need to change it in order to have all permissions
 USER root

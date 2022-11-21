@@ -1,4 +1,4 @@
-FROM remote-host
+FROM --platform=linux/amd64 remote-host
 
 COPY ./conf/nginx.repo /etc/yum.repos.d/nginx.repo
 
@@ -19,7 +19,7 @@ RUN                                                                          \
     php71u-gd                                                                \
      --enablerepo=ius-archive && yum clean all
 
-EXPOSE 80 443
+EXPOSE 3000 443
 
 VOLUME /var/www/html /var/log/nginx /var/log/php-fpm /var/lib/php-fpm
 

@@ -2,13 +2,14 @@ version: '3'
 services:
   jenkins:
     container_name: jenkins
-    image: jenkins-ansible
+    image: jenkins-docker
     build: 
-      context: ./jenkins-ansible/
+      context: ./pipeline-jenkinsfile/
     ports:
       - 8080:8080
     volumes:
       - '$PWD/jenkins-home:/var/jenkins_home'
+      - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       - net
   
@@ -32,5 +33,34 @@ services:
       - '$PWD/db_data:/var/lib/mysql'
     networks:
       - net
+
+  web:
+    container_name: web
+    image: ansible-web
+    build:
+      context: ./jenkins-ansible/web/
+    ports:
+      - 3000:3000
+    networks:
+      - net
+    depends_on:
+      - remote
+
+  git:
+    #root1234
+    container_name: git
+    image: 'gitlab/gitlab-ce:latest'
+    ports:
+      - '8090:80'
+      - '443:443'
+      - '22:22'
+    volumes:
+      - './gitlab/config:/etc/gitlab'
+      - './gitlab/logs:/var/log/gitlab'
+      - './gitlab/data:/var/opt/gitlab'
+    shm_size: '256m'
+    networks:
+      - net
+
 networks:
   net: 
