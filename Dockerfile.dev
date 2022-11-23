@@ -1,0 +1,5 @@
+FROM ubuntu
+
+ARG aaa
+ENV aaap=${aaa}
+

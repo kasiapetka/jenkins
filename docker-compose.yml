@@ -9,7 +9,20 @@ services:
       - 8080:8080
     volumes:
       - '$PWD/jenkins-home:/var/jenkins_home'
-      - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      - net
+    environment:
+      - DOCKER_HOST=tcp://socat:2375
+    links:
+      - socat
+
+  socat:
+    image: bpack/socat
+    command: TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - "2375"
     networks:
       - net
   
